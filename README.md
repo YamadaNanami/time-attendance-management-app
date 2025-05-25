@@ -6,7 +6,7 @@
 
 - PHP 8.4.2
 - Laravel 12.0.8
-- MySQL 9.3
+- MySQL 8.0.26
 - nginx 1.27.5
 
 ## ER 図
