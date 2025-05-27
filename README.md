@@ -2,6 +2,14 @@
 
 ## README に必要な記載を追加すること！
 
+メモ
+.env 書き換え箇所
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_DATABASE=laravel_db
+DB_USERNAME=laravel_user
+DB_PASSWORD=laravel_pass
+
 ## 使用技術（実行環境）
 
 - PHP 8.4.2
