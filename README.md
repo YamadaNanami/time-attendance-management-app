@@ -4,6 +4,7 @@
 
 メモ
 .env 書き換え箇所
+APP_LOCALE=ja
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_DATABASE=laravel_db
