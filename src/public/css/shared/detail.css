@@ -1,0 +1,95 @@
+.content-wrap {
+    width: 900px;
+    margin: 80px auto;
+}
+
+.detail-form{
+    position:relative;
+    width: 100%;
+}
+
+.detail-table{
+    width: 100%;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+.table-row{
+    height: 85px;
+    border-bottom: 2px solid #E1E1E1;
+}
+
+.table-row:last-of-type{
+    height: 120px;
+    border-bottom: none;
+}
+
+.table-title{
+    width: 35%;
+    color: #737373;
+    padding-left: 45px;
+    text-align: left;
+}
+
+.table-detail{
+    width: 65%;
+    font-weight: 700;
+}
+
+.flex-wrap{
+    display: flex;
+    align-items: center;
+    line-height: 85px;
+}
+
+.year{
+    margin-right: 100px;
+}
+
+input[type=time]{
+    width: 100px;
+    border-radius: 4px;
+    border: 1px solid #E1E1E1;
+    text-align: center;
+}
+
+input[type=time]:first-of-type{
+    margin-right: 50px;
+}
+
+input[type=time]:last-of-type{
+    margin-left: 50px;
+}
+
+input[type=time]::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+.comment-area{
+    width: 316px;
+    height: 72px;
+    padding: 8px 14px;
+    border: 1px solid #D9D9D9;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.submit-btn{
+    position: absolute;
+    right: 0;
+    width: 130px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #000;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.text{
+    font-size: 18px;
+    color: #FF0000;
+    text-align: right;
+}

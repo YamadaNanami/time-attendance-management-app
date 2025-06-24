@@ -1,0 +1,82 @@
+/* 共通のcss ここから */
+*{
+    /* 基本的なフォントサイズを16pxで設定する */
+    font-size: 16px;
+}
+
+.bg-default{
+    background-color: #F0EFF2;
+}
+
+a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+}
+
+/* 共通のcss ここまで */
+
+.header{
+    padding: 20px 3%;
+    background-color: #000;
+}
+
+.header-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-logo{
+    width: 370px;
+    height: 36px;
+}
+
+.logo-img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.nav-list-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-list{
+    margin-right: 30px;
+}
+
+.nav-list:last-of-type{
+    margin-right: 0;
+}
+
+.nav-link{
+    font-size: 24px;
+    color: #fff;
+    font-weight: 700;
+}
+
+/* ログイン画面・会員登録画面のページタイトルの設定 */
+.auth-page-title{
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+/* 他ページのページタイトルの設定 */
+.page-title{
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    padding-left: 25px;
+    border-left: 8px solid #000;
+}
+
+.error-msg{
+    color: red;
+    margin-bottom: -20px;
+}

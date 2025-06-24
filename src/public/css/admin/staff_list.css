@@ -1,0 +1,43 @@
+.content-wrap {
+    width: 900px;
+    margin: 80px auto;
+}
+
+.staff-table{
+    width: 100%;
+    margin-top: 70px;
+    border-collapse: collapse;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.table-row {
+    height: 40px;
+    border-bottom: 2px solid #E1E1E1;
+}
+
+.table-row:last-of-type {
+    border-bottom: none;
+}
+
+.table-row:first-of-type {
+    border-bottom: 3px solid #E1E1E1;
+}
+
+.table-title,
+.table-detail {
+    padding: 0 35px;
+    font-weight: 700;
+    color: #737373;
+    text-align: center;
+}
+
+.email-head{
+    width: 300px;
+}
+
+.email-area{
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+}
