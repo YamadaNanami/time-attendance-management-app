@@ -35,7 +35,7 @@
                         <a href="" class="nav-link">申請</a>
                     </li>
                     <li class="nav-list">
-                        <form action="logout" method="post">
+                        <form action="/logout" method="post">
                             @csrf
                             <input type="hidden" name="role" value="user">
                             <button type="submit" class="nav-link">ログアウト</button>
@@ -55,7 +55,7 @@
                         <a href="" class="nav-link">申請一覧</a>
                     </li>
                     <li class="nav-list">
-                    <form action="logout" method="post">
+                    <form action="/logout" method="post">
                             @csrf
                             <input type="hidden" name="role" value="admin">
                             <button type="submit" class="nav-link">ログアウト</button>

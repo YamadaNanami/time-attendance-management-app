@@ -24,11 +24,22 @@
         @enderror
         <label for="password" class="form-label">パスワード</label>
         <input type="password" name="password" id="password" class="form-input">
-        @error('password')
-        <p class="error-msg">{{ $message }}</p>
-        @enderror
+        @if($errors->has('password'))
+            @foreach($errors->get('password') as $message)
+                @if(!str_contains($message,'一致しません'))
+                <p class="error-msg">{{ $message }}</p>
+                @endif
+            @endforeach
+        @endif
         <label for="conf-password" class="form-label">パスワード確認</label>
         <input type="password" name="password_confirmation" id="conf-password" class="form-input">
+        @if($errors->has('password'))
+            @foreach($errors->get('password') as $message)
+                @if(str_contains($message,'一致しません'))
+                <p class="error-msg last-input-msg">{{ $message }}</p>
+                @endif
+            @endforeach
+        @endif
         <button type="submit" class="form-btn">登録する</button>
     </form>
     <a href="{{ route('login') }}" class="login-link">ログインはこちら</a>

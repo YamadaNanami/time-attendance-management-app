@@ -75,7 +75,7 @@ class LoginController extends Controller
                 }else{
                     //roleが不適切な場合はログイン画面へ遷移する
                     Auth::logout();
-                    return redirect()->route('login');
+                    return back()->withErrors(['email' => __('auth.failed')]);
                 }
             }elseif($isAdminView == true){
                 // 管理者用のログイン画面からのリクエストの場合
@@ -83,7 +83,7 @@ class LoginController extends Controller
                 if($user->role != 2){
                     //roleが不適切な場合はログイン画面へ遷移する
                     Auth::logout();
-                    return redirect()->route('admin.login');
+                    return back()->withErrors(['email' => __('auth.failed')]);
                 }
             }
 
