@@ -16,4 +16,8 @@ class AttendanceCorrectionDetail extends Model
     public function correction(){
         return $this->belongsTo(AttendanceCorrection::class);
     }
+
+    public function timecard(){
+        return $this->belongsTo(Timecard::class);
+    }
 }
