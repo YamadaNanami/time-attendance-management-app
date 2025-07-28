@@ -18,7 +18,6 @@ use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Contracts\RedirectsIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
-// use Laravel\Fortify\Http\Requests\LoginRequest;
 
 class LoginController extends Controller
 {

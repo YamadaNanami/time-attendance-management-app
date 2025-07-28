@@ -46,4 +46,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function timecards(){
+        return $this->hasMany(Timecard::class);
+    }
+
+    public function workDays(){
+        return $this->hasMany(WorkDay::class);
+    }
+
+    public function attendanceCorrections(){
+        return $this->hasMany(AttendanceCorrectionDetail::class);
+    }
 }

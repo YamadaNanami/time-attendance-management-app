@@ -10,8 +10,10 @@
     @yield('css')
 </head>
 
-<!-- fortify導入後にログイン・登録・メール認証画面の背景色が白になるか確認する -->
-<body @if(request()->routeIs('login') || request()->routeIs('register') || request()->routeIs('verification.notice') || request()->routeIs('admin.login')) @else class="bg-default" @endif>
+@php
+    $isRoute = request()->routeIs('login') || request()->routeIs('register') || request()->routeIs('verification.notice') || request()->routeIs('admin.login');
+@endphp
+<body @if($isRoute) @else class="bg-default" @endif>
     <header class="header">
         <div class="header-wrap">
             <h1 class="page-logo">
@@ -20,49 +22,49 @@
                 </a>
             </h1>
             @if(!Auth::check() || request()->routeIs('verification.notice'))
-            {{-- 未ログイン時はナビメニューを表示させない --}}
-            @elseif(Auth::user()->role == 1)
-            {{-- 一般ユーザー用のナビメニュー --}}
-            <nav>
-                <ul class="nav-list-wrap">
-                    <li class="nav-list">
-                        <a href="{{ route('user.attendance') }}" class="nav-link">勤怠</a>
-                    </li>
-                    <li class="nav-list">
-                        <a href="" class="nav-link">勤怠一覧</a>
-                    </li>
-                    <li class="nav-list">
-                        <a href="" class="nav-link">申請</a>
-                    </li>
-                    <li class="nav-list">
+                {{-- 未ログイン時はナビメニューを表示させない --}}
+            @elseif(Auth::user()->role == config('constants.ROLE.USER'))
+                {{-- 一般ユーザー用のナビメニュー --}}
+                <nav>
+                    <ul class="nav-list-wrap">
+                        <li class="nav-list">
+                            <a href="{{ route('user.index') }}" class="nav-link">勤怠</a>
+                        </li>
+                        <li class="nav-list">
+                            <a href="{{ route('user.attendance_list') }}" class="nav-link">勤怠一覧</a>
+                        </li>
+                        <li class="nav-list">
+                            <a href="{{ route('application_list') }}" class="nav-link">申請</a>
+                        </li>
+                        <li class="nav-list">
+                            <form action="/logout" method="post">
+                                @csrf
+                                <input type="hidden" name="role" value={{Auth::user()->role}}>
+                                <button type="submit" class="nav-link">ログアウト</button>
+                            </form>
+                        </li>
+                    </ul>
+                @elseif(Auth::user()->role == config('constants.ROLE.ADMIN'))
+                    {{-- 管理者ユーザー用のナビメニュー --}}
+                    <ul class="nav-list-wrap">
+                        <li class="nav-list">
+                            <a href="{{ route('admin.attendance_list') }}" class="nav-link">勤怠一覧</a>
+                        </li>
+                        <li class="nav-list">
+                            <a href="{{ route('admin.staff_list') }}" class="nav-link">スタッフ一覧</a>
+                        </li>
+                        <li class="nav-list">
+                            <a href="{{ route('application_list') }}" class="nav-link">申請一覧</a>
+                        </li>
+                        <li class="nav-list">
                         <form action="/logout" method="post">
-                            @csrf
-                            <input type="hidden" name="role" value="user">
-                            <button type="submit" class="nav-link">ログアウト</button>
-                        </form>
-                    </li>
-                </ul>
-                @elseif(Auth::user()->role == 2)
-                {{-- 管理者ユーザー用のナビメニュー --}}
-                <ul class="nav-list-wrap">
-                    <li class="nav-list">
-                        <a href="" class="nav-link">勤怠一覧</a>
-                    </li>
-                    <li class="nav-list">
-                        <a href="" class="nav-link">スタッフ一覧</a>
-                    </li>
-                    <li class="nav-list">
-                        <a href="" class="nav-link">申請一覧</a>
-                    </li>
-                    <li class="nav-list">
-                    <form action="/logout" method="post">
-                            @csrf
-                            <input type="hidden" name="role" value="admin">
-                            <button type="submit" class="nav-link">ログアウト</button>
-                        </form>
-                    </li>
-                </ul>
-            </nav>
+                                @csrf
+                                <input type="hidden" name="role" value={{Auth::user()->role}}>
+                                <button type="submit" class="nav-link">ログアウト</button>
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
             @endif
         </div>
     </header>

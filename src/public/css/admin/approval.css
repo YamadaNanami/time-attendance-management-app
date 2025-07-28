@@ -1,9 +1,9 @@
 .content-wrap {
     width: 900px;
-    margin: 80px auto;
+    margin: 80px auto 100px;
 }
 
-.approval-form {
+.table-wrap {
     position: relative;
     width: 100%;
 }
@@ -44,7 +44,7 @@
 }
 
 .year {
-    margin-right: 100px;
+    margin-right: 120px;
 }
 
 input[type=time] {

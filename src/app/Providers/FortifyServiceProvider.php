@@ -45,9 +45,11 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 $role = $request->role;
-                if($role == 'user'){
+                if($role == 1){
+                    // 一般ユーザーの場合はログイン画面（一般ユーザー）へリダイレクトする
                     return redirect()->route('login');
-                }elseif($role == 'admin'){
+                }elseif($role == 2){
+                    // 管理者の場合はログイン画面（管理者）へリダイレクトする
                     return redirect()->route('admin.login');
                 }
             }
@@ -60,7 +62,7 @@ class FortifyServiceProvider extends ServiceProvider
                 $role = Auth::user()->role;
                 if($role == 1){
                     // 一般ユーザーの場合は出勤登録画面（一般ユーザー）へリダイレクトする
-                    return redirect()->route('user.attendance');
+                    return redirect()->route('user.index');
                 }elseif($role == 2){
                     // 管理者の場合は勤怠一覧画面（管理者）へリダイレクトする
                     return redirect()->route('admin.attendance_list');
@@ -91,8 +93,9 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(10)->by($throttleKey);
         });
 
-        // RateLimiter::for('two-factor', function (Request $request) {
-        //     return Limit::perMinute(5)->by($request->session()->get('login.id'));
-        // });
+        Fortify::registerView(function () {
+            return view('auth.register');
+        });
+
     }
 }

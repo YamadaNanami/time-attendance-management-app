@@ -9,7 +9,8 @@
         "php": "^8.2",
         "laravel/fortify": "^1.27",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^2.10.1",
+        "livewire/livewire": "^3.6"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -26,7 +27,12 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/AttendanceHelper.php",
+            "app/Helpers/AttendanceCorrectionHelper.php",
+            "app/Helpers/AttendanceDetailHelper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

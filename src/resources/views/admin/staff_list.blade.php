@@ -15,26 +15,17 @@
             <th class="table-title email-head">メールアドレス</th>
             <th class="table-title">月次勤怠</th>
         </tr>
-        <tr class="table-row">
-            <td class="table-detail">西 伶奈</td>
-            <td class="table-detail email-area">reina.n@coachtech.com</td>
-            <td class="table-detail">
-                <form action="" class="detail-form">
-                    <button type="submit">詳細</button>
-                </form>
-            </td>
-        </tr>
-        <!-- css確認用　あとで削除する -->
-        <tr class="table-row">
-            <td class="table-detail">山田 太郎</td>
-            <td class="table-detail email-area">keikichi.y@coachtech.com</td>
-            <td class="table-detail">
-                <form action="" class="detail-form">
-                    <button type="submit">詳細</button>
-                </form>
-            </td>
-        </tr>
-        <!-- あとで削除する　ここまで -->
+        @foreach($staffList as $user)
+            <tr class="table-row">
+                <td class="table-detail">{{ $user['name'] }}</td>
+                <td class="table-detail email-area">{{ $user['email'] }}</td>
+                <td class="table-detail">
+                    <form action="{{ route('admin.staff_attendance_list',['id' => $user['id']]) }}" method="get" class="detail-form">
+                        <button type="submit">詳細</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
     </table>
 </div>
 @endsection

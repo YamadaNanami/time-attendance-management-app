@@ -19,6 +19,10 @@ input[type=radio]:checked + .tab-btn{
     margin-right: 80px;
 }
 
+.tab-btn{
+    cursor: pointer;
+}
+
 .application-table{
     width: 900px;
     border-collapse: collapse;

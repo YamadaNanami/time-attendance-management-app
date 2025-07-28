@@ -8,20 +8,27 @@
 
 @section('content')
 <div class="content-wrap">
-    <div class="status">勤務外</div>
-    <div class="date">2023年6月1日(木)</div>
-    <div class="time">08:00</div>
-    <form action="" method="" class="form-wrap">
-        <button type="submit" value="1" class="form-btn">出勤</button>
-        {{--出勤中の場合のbtn表示--}}
-        <!-- <div class="flex-wrap">
-            <button type="submit" value="4" class="form-btn">退勤</button>
-            <button type="submit" value="2" class="form-btn bg-white">休憩入</button>
-        </div> -->
-        {{--休憩中の場合のbtn表示--}}
-        <!-- <button type="submit" value="3" class="form-btn bg-white">休憩戻</button> -->
+    <div class="status">{{ $status }}</div>
+    @livewire('attendance')
+    <form action="{{ route('user.createTimecard') }}" method="post" class="form-wrap">
+        @csrf
+        @switch ($status)
+            @case('勤務外')
+                <button type="submit" name="type" value="1" class="form-btn">出勤</button>
+                @break
+            @case('出勤中')
+                <div class="flex-wrap">
+                    <button type="submit" name="type" value="4" class="form-btn">退勤</button>
+                    <button type="submit" name="type" value="2" class="form-btn bg-white">休憩入</button>
+                </div>
+                @break
+            @case('休憩中')
+                <button type="submit" name="type" value="3" class="form-btn bg-white">休憩戻</button>
+                @break
+        @endswitch
     </form>
-    {{--退勤後のみ下記を表示させる--}}
-    <!-- <p class="text">お疲れ様でした。</p> -->
+    @if($status == '退勤済')
+    <p class="text">お疲れ様でした。</p>
+    @endif
 </div>
 @endsection
