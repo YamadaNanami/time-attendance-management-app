@@ -27,15 +27,24 @@
                 {{-- 一般ユーザー用のナビメニュー --}}
                 <nav>
                     <ul class="nav-list-wrap">
-                        <li class="nav-list">
-                            <a href="{{ route('user.index') }}" class="nav-link">勤怠</a>
-                        </li>
-                        <li class="nav-list">
-                            <a href="{{ route('user.attendance_list') }}" class="nav-link">勤怠一覧</a>
-                        </li>
-                        <li class="nav-list">
-                            <a href="{{ route('application_list') }}" class="nav-link">申請</a>
-                        </li>
+                        @if(request()->routeIs('user.index') && $status == '退勤済')
+                            <li class="nav-list">
+                                <a href="{{ route('user.attendance_list') }}" class="nav-link">今月の出勤一覧</a>
+                            </li>
+                            <li class="nav-list">
+                                <a href="{{ route('application_list') }}" class="nav-link">申請一覧</a>
+                            </li>
+                        @else
+                            <li class="nav-list">
+                                <a href="{{ route('user.index') }}" class="nav-link">勤怠</a>
+                            </li>
+                            <li class="nav-list">
+                                <a href="{{ route('user.attendance_list') }}" class="nav-link">勤怠一覧</a>
+                            </li>
+                            <li class="nav-list">
+                                <a href="{{ route('application_list') }}" class="nav-link">申請</a>
+                            </li>
+                        @endif
                         <li class="nav-list">
                             <form action="/logout" method="post">
                                 @csrf
@@ -44,8 +53,10 @@
                             </form>
                         </li>
                     </ul>
-                @elseif(Auth::user()->role == config('constants.ROLE.ADMIN'))
+                </nav>
+            @elseif(Auth::user()->role == config('constants.ROLE.ADMIN'))
                     {{-- 管理者ユーザー用のナビメニュー --}}
+                <nav>
                     <ul class="nav-list-wrap">
                         <li class="nav-list">
                             <a href="{{ route('admin.attendance_list') }}" class="nav-link">勤怠一覧</a>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AttendanceCorrection;
+use App\Models\WorkDay;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,47 +11,62 @@ use Illuminate\Support\Facades\Auth;
 class ApplicationListController extends Controller
 {
     public function index(Request $request){
-        $approval_flag = $request->input('approval_flag') ?? 0;
+        $approvalFlag = $request->input('approvalFlag') ?? 0;
         $role = Auth::user()->role;
 
         if($role == 1){
-            $data = $this->userIndex($approval_flag);
+            $data = $this->userIndex($request,$approvalFlag);
         }elseif($role == 2){
-            $data = $this->adminIndex($approval_flag);
+            $data = $this->adminIndex($approvalFlag);
         }
 
-        return view('shared.application_list',compact('approval_flag','data'));
+        return view('shared.application_list',compact('approvalFlag','data'));
     }
 
-    private function userIndex($approval_flag){
+    private function userIndex($request,$approvalFlag){
         $user = Auth::user();
 
         $lists = AttendanceCorrection::where('user_id',$user->id)
-            ->where('approval_flag',$approval_flag)
+            ->where('approval_flag',$approvalFlag)
             ->get();
 
-        $data = $lists->map(function ($list) use ($user) {
-            return [
+        $isListRoute = $request->routeIs('application_list');
+
+        $data = $lists->map(function ($list) use ($user,$isListRoute) {
+            $targetDate = Carbon::parse($list->target_date);
+
+            $item =  [
                 'name' => $user->name,
-                'target_date' => Carbon::parse($list->target_date),
+                'targetDate' => $targetDate,
                 'comment' => $list->comment,
                 'corrected_date' => Carbon::parse($list->created_at),
-                'attendanceCorrectionId' => $list->id
+                'attendanceCorrectionId' => $list->id,
             ];
+
+            if($isListRoute){
+                $workDaysId = WorkDay::where('user_id', $user->id)
+                    ->where('date', $targetDate)
+                    ->value('id');
+
+                $item['workDaysId'] = $workDaysId ?? 0;
+            }
+
+            return $item;
+
         });
 
         return $data;
     }
 
-    private function adminIndex($approval_flag){
-        $lists = AttendanceCorrection::where('approval_flag',$approval_flag)
+    private function adminIndex($approvalFlag){
+        $lists = AttendanceCorrection::where('approval_flag',$approvalFlag)
             ->with('user')
             ->get();
 
         $data = $lists->map(function ($list) {
             return [
                 'name' => $list->user->name,
-                'target_date' => Carbon::parse($list->target_date),
+                'targetDate' => Carbon::parse($list->target_date),
                 'comment' => $list->comment,
                 'corrected_date' => Carbon::parse($list->created_at),
                 'attendanceCorrectionId' => $list->id
