@@ -46,12 +46,18 @@
 
 1. テスト用 DB の準備
 
-   1. 管理者権限で DB にログインする
-      - mysql -u root -p
-      - パスワードは、docker-compose.yml ファイルの MYSQL_ROOT_PASSWORD:に設定されている root を入力する
-   2. テスト用 DB の作成
-      - CREATE DATABASE demo_test;
-      - SHOW DATABASES;入力後、demo_test が作成されているかを確認する
+   1. テスト用 DB を作成する
+
+   ```
+   //テスト用データベースの作成
+   docker-compose exec mysql bash
+   mysql -u root -p
+   //パスワードはrootと入力
+   CREATE DATABASE demo_test;
+
+   docker-compose exec php bash
+   php artisan migrate --env=testing
+   ```
 
 2. config/database.php を開き、 mysql の配列部分をコピーして新たに mysql_test を作成し、以下の項目を修正する
 
@@ -63,7 +69,11 @@
 
 3. PHP コンテナにログインし、.env をコピーして.env.testing ファイルを作成する
 
-   - cp .env .env.testing
+```
+
+cp .env .env.testing
+
+```
 
 4. .env.testing ファイルの以下項目を編集する
 
@@ -77,42 +87,63 @@
 
 5. テスト用アプリケーションキーを作成する
 
-   - php artisan key:generate --env=testing
+```
+
+php artisan key:generate --env=testing
+
+```
 
 6. キャッシュを削除する
 
-   - php artisan config:clear
+```
 
-7. テスト用テーブルを作成する
+php artisan config:clear
 
-   - php artisan migrate --env=testing
+```
 
-8. phpunit.xml 内の以下を編集する
+7. phpunit.xml 内の以下を編集する
 
    | env name        | 変更前の value | 変更後の value |
    | --------------- | -------------- | -------------- |
    | "DB_CONNECTION" | "sqlite"       | "mysql_test"   |
    | "DB_DATABASE"   | ":memory:"     | "demo_test"    |
 
-9. PHP コンテナにログインし、.env.testing をコピーして.env.dusk.local ファイルを作成する(Dusk 用の.env ファイルの作成)
+8. PHP コンテナにログインし、.env.testing をコピーして.env.dusk.local ファイルを作成する(Dusk 用の.env ファイルの作成)
 
-   - cp .env.testing .env.dusk.local
+```
 
-10. .env.dusk.local ファイルの以下項目を編集・追加する
+cp .env.testing .env.dusk.local
 
-    | 項目            | 変更前の値               | 変更後の値                  |
-    | --------------- | ------------------------ | --------------------------- |
-    | APP_URL         | http://localhost         | http://nginx                |
-    | DUSK_DRIVER_URL | (追加する項目のためなし) | http://selenium:4444/wd/hub |
+```
 
-11. 以下コマンドを実行する
+9. .env.dusk.local ファイルの以下項目を編集・追加する
 
-    - php artisan dusk:install
+   | 項目            | 変更前の値               | 変更後の値                  |
+   | --------------- | ------------------------ | --------------------------- |
+   | APP_URL         | http://localhost         | http://nginx                |
+   | DUSK_DRIVER_URL | (追加する項目のためなし) | http://selenium:4444/wd/hub |
+
+10. 以下コマンドを実行する
+
+```
+
+php artisan dusk:install
+
+```
 
 ## テストの実行
 
-1. test/Feature 内のテスト実施
-2. test/Unit 内のテスト実施
+PHP コンテナ内で以下コマンドを実行する
+
+```
+
+//test/Feature 内のテスト実施する場合
+vendor/bin/phpunit tests/Feature/テストファイル名
+
+//test/Unit 内のテストを実施する場合
+php artisan dusk
+
+```
 
 ## 使用技術（実行環境）
 
