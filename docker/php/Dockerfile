@@ -14,4 +14,6 @@ RUN curl -sSL https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhs
     chmod +x mhsendmail && \
     mv mhsendmail /usr/local/bin/mhsendmail
 
+RUN apt-get -y update && apt-get -y install chromium libgconf-2-4
+
 WORKDIR /var/www
