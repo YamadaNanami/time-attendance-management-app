@@ -131,15 +131,23 @@ php artisan dusk:install
 
 ## テストの実行
 
-PHP コンテナ内で以下コマンドを実行する
-
 ```
 
 //test/Feature 内のテスト実施する場合
+docker compose exec php bash
 vendor/bin/phpunit tests/Feature/テストファイル名
 
+
 //test/Unit 内のテストを実施する場合
+docker compose exec app bash
+
+cp .env.dusk.local .env     //.envを切り替える
+php artisan config:clear
+
 php artisan dusk
+
+cp .env.backup .env     //.envを元に戻す
+php artisan config:clear
 
 ```
 
@@ -152,7 +160,7 @@ php artisan dusk
 
 ## ER 図
 
-<img src="ER.drawio.png">
+<img src="ER.png">
 
 ## URL
 
