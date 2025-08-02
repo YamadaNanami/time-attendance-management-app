@@ -108,7 +108,7 @@
             </tr>
         </table>
         @if($isReadonly)
-        <!-- 「*承認待ちのため修正はできません。」が管理者側に表示されると違和感があったため、管理者向けの文言を追加 -->
+        {{-- 「*承認待ちのため修正はできません。」が管理者側に表示されると違和感があったため、管理者向けの文言を追加 --}}
             @if(Auth::user()->role == config('constants.ROLE.USER'))
                 <p class="text">*承認待ちのため修正はできません。</p>
             @elseif(Auth::user()->role == config('constants.ROLE.ADMIN'))

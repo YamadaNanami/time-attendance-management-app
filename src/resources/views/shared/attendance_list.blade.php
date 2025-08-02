@@ -18,9 +18,9 @@
     @if(Auth::user()->role == config('constants.ROLE.USER'))
         <h2 class="page-title">勤怠一覧</h2>
         <form action="{{ route('user.attendance_list') }}" method="get" class="month-form">
-            @elseif(Auth::user()->role == config('constants.ROLE.ADMIN'))
-            <h2 class="page-title">{{ $user->name }}さんの勤怠</h2>
-            <form action="{{ route('admin.staff_attendance_list',['id' => $user->id]) }}" method="get" class="month-form">
+    @elseif(Auth::user()->role == config('constants.ROLE.ADMIN'))
+        <h2 class="page-title">{{ $user->name }}さんの勤怠</h2>
+        <form action="{{ route('admin.staff_attendance_list',['id' => $user->id]) }}" method="get" class="month-form">
     @endif
         <button type="submit" class="month-btn" name="monthBtn" value="subMonth">
             <img src="{{ asset('img/arrow.svg') }}" alt="矢印" class="arrow-icon">

@@ -64,13 +64,13 @@
             </tr>
         </table>
         @if($data['approvalFlag'] == config('constants.APPROVAL_FLAG.UNAPPROVED'))
-            <!-- 承認前は以下のbtnを表示する -->
+            {{-- 承認前は以下のbtnを表示する --}}
             <form action="{{ route('admin.approval.store_update',['attendance_correct_request' => $data['attendanceCorrectionId']]) }}" method="post">
                 @csrf
                 <button type="submit" class="submit-btn">承認</button>
             </form>
         @elseif($data['approvalFlag'] == config('constants.APPROVAL_FLAG.APPROVED'))
-            <!-- 承認後は以下を表示する -->
+            {{-- 承認後は以下を表示する --}}
             <button disabled class="disabled-btn">承認済み</button>
         @endif
     </div>

@@ -17,7 +17,7 @@
 @section('content')
 <div class="content-wrap">
     <h2 class="page-title">申請一覧</h2>
-        <form action="{{ route('application_list') }}" method="get" class="tab-menu">
+    <form action="{{ route('application_list') }}" method="get" class="tab-menu">
         <input type="radio" onchange="submit(this.form)" name="approvalFlag" id="unapproved" value="0" hidden {{ $approvalFlag == 0 ? 'checked' : '' }}>
         <label for="unapproved" class="tab-btn">承認待ち</label>
         <input type="radio" onchange="submit(this.form)" name="approvalFlag" id="approved" value="1" hidden {{ $approvalFlag == 1 ? 'checked' : '' }}>
