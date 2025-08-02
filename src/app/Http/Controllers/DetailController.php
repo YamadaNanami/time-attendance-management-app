@@ -77,7 +77,7 @@ class DetailController extends Controller
     }
 
     private function handleUserRequest($correctionId, $workDayId, $userId, $date, $clockIn, $clockOut, $breakIn, $breakOut){
-        if($workDayId = 0){
+        if($workDayId == 0){
             // 新規申請
             AttendanceCorrectionHelper::createDetailRows($correctionId,$clockIn,$clockOut,$breakIn,$breakOut);
         }else{

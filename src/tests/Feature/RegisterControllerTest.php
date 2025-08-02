@@ -11,7 +11,7 @@ class RegisterControllerTest extends TestCase
     /**
      * ID:1
      */
-    public function test_registration_fails_without_name()
+    public function test_registration_fail_without_name()
     {
         $this->post('/register', [
             'email' => 'test@example.com',
@@ -24,7 +24,7 @@ class RegisterControllerTest extends TestCase
         $this->assertEquals('お名前を入力してください', $errors['name'][0]);
     }
 
-    public function test_registration_fails_without_email()
+    public function test_registration_fail_without_email()
     {
         $this->post('/register', [
             'name' => 'テスト 太郎',
@@ -37,7 +37,7 @@ class RegisterControllerTest extends TestCase
         $this->assertEquals('メールアドレスを入力してください', $errors['email'][0]);
     }
 
-    public function test_registration_fails_min_password()
+    public function test_registration_fail_min_password()
     {
         $this->post('/register', [
             'name' => '山田　太郎',
@@ -51,7 +51,7 @@ class RegisterControllerTest extends TestCase
         $this->assertEquals('パスワードは8文字以上で入力してください', $errors['password'][0]);
     }
 
-    public function test_registration_fails_confirmed_password()
+    public function test_registration_fail_confirmed_password()
     {
         $this->post('/register', [
             'name' => '山田　太郎',
@@ -65,7 +65,7 @@ class RegisterControllerTest extends TestCase
         $this->assertEquals('パスワードと一致しません', $errors['password'][0]);
     }
 
-    public function test_registration_fails_without_password()
+    public function test_registration_fail_without_password()
     {
         $this->post('/register', [
             'name' => '山田　太郎',

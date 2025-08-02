@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->date('date');
-            $table->time('clock_in')->nullable();
-            $table->time('clock_out')->nullable();
-            $table->integer('break_duration');
-            $table->integer('total_work_time');
+            $table->time('clock_in');
+            $table->time('clock_out');
+            $table->integer('break_duration')->comment('分単位');
+            $table->integer('total_work_time')->comment('分単位');
             $table->timestamps();
         });
     }

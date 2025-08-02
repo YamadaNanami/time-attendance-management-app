@@ -12,6 +12,7 @@ use Tests\DuskTestCase;
 class AttendanceControllerTest extends DuskTestCase
 {
     use DatabaseMigrations;
+
     /**
      * ID:4
      */
@@ -28,8 +29,8 @@ class AttendanceControllerTest extends DuskTestCase
         $japaneseWeekday = $japaneseWeekdays[$weekdayNumber];
 
         $year = Carbon::now()->format('Y');
-        $month = ltrim(Carbon::now()->format('m'),'0');
-        $day = ltrim(Carbon::now()->format('d'),'0');
+        $month = Carbon::now()->format('n');
+        $day = Carbon::now()->format('j');
 
         $date = $year.'年'.$month.'月'.$day.'日('.$japaneseWeekday.')';
         $time = Carbon::now()->format('H:i');
@@ -38,9 +39,9 @@ class AttendanceControllerTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/attendance')
                 ->waitFor('.date')
-                ->assertSee($date)
+                ->assertSeeIn('.date',$date) //現在日付の確認
                 ->waitFor('.time')
-                ->assertSee($time);
+                ->assertSeeIn('.time',$time); //現在時刻の確認
         });
     }
 
@@ -59,7 +60,7 @@ class AttendanceControllerTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/attendance')
                 ->waitFor('.status')
-                ->assertSee('勤務外');
+                ->assertSeeIn('.status','勤務外'); //ステータスの確認
         });
     }
 
@@ -82,7 +83,7 @@ class AttendanceControllerTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/attendance')
                 ->waitFor('.status')
-                ->assertSee('出勤中');
+                ->assertSeeIn('.status','出勤中'); //ステータスの確認
         });
     }
 
@@ -112,7 +113,7 @@ class AttendanceControllerTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/attendance')
                 ->waitFor('.status')
-                ->assertSee('休憩中');
+                ->assertSeeIn('.status','休憩中'); //ステータスの確認
         });
     }
 
@@ -142,7 +143,7 @@ class AttendanceControllerTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/attendance')
                 ->waitFor('.status')
-                ->assertSee('退勤済');
+                ->assertSeeIn('.status','退勤済'); //ステータスの確認
         });
     }
 
@@ -161,10 +162,10 @@ class AttendanceControllerTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/attendance')
                 ->waitFor('.form-btn')
-                ->assertSeeIn('.form-btn','出勤')
+                ->assertSeeIn('.form-btn','出勤') //ボタンの表示確認
                 ->press('出勤')
                 ->waitFor('.status')
-                ->assertSeeIn('.status','出勤中');
+                ->assertSeeIn('.status','出勤中'); //ステータスの確認
         });
     }
 
@@ -196,7 +197,7 @@ class AttendanceControllerTest extends DuskTestCase
                 ->visit('/attendance')
                 ->waitFor('.text')
                 ->assertNotPresent('.form-btn')
-                ->assertSee('出勤');
+                ->assertSee('出勤'); //出勤ボタンが表示されないかの確認
         });
     }
 
@@ -208,6 +209,13 @@ class AttendanceControllerTest extends DuskTestCase
             'role' => 1
         ]);
 
+        $adminUser = User::factory()->create([
+            'name' => 'test admin',
+            'email' => 'admin@example.com',
+            'password' => 'password',
+            'role' => 2
+        ]);
+
         $this->browse(function (Browser $browser) use($user)  {
             $browser->loginAs($user)
                 ->visit('/attendance')
@@ -216,18 +224,11 @@ class AttendanceControllerTest extends DuskTestCase
                 ->press('ログアウト');
         });
 
-        $adminUser = User::factory()->create([
-            'name' => 'test admin',
-            'email' => 'admin@example.com',
-            'password' => 'password',
-            'role' => 2
-        ]);
-
-        $clockIn = rtrim(
+        $clockIn = substr(
             Timecard::where('user_id', $user->id)
                 ->where('date', Carbon::now()->format('Y-m-d'))
                 ->value('time')
-            ,':00'
+            ,0,5
         );
 
         $code = '<td class="table-detail">'.$user->name.'</td>
@@ -236,8 +237,8 @@ class AttendanceControllerTest extends DuskTestCase
         $this->browse(function (Browser $browser) use($adminUser,$code) {
             $browser->loginAs($adminUser)
                 ->visit('/admin/attendance/list')
-                ->assertSeeIn('.selected-date', Carbon::now()->format('Y/m/d'))
-                ->assertSourceHas($code);
+                ->assertSeeIn('.selected-date', Carbon::now()->format('Y/m/d')) //日付の表示確認
+                ->assertSourceHas($code); //対象ユーザーの出勤時間の確認
         });
     }
 
@@ -263,10 +264,10 @@ class AttendanceControllerTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/attendance')
                 ->waitFor('.form-btn.bg-white')
-                ->assertSeeIn('.form-btn.bg-white','休憩入')
-                ->press('休憩入')
+                ->assertSeeIn('.form-btn.bg-white','休憩入') //ボタンの表示確認
+                ->press('休憩入') //休憩の処理
                 ->waitFor('.status')
-                ->assertSeeIn('.status','休憩中');
+                ->assertSeeIn('.status','休憩中'); //ステータスの確認
         });
     }
 
@@ -293,7 +294,7 @@ class AttendanceControllerTest extends DuskTestCase
                 ->waitFor('.form-btn.bg-white')
                 ->press('休憩戻')
                 ->waitFor('.form-btn.bg-white')
-                ->assertSeeIn('.form-btn.bg-white','休憩入');
+                ->assertSeeIn('.form-btn.bg-white','休憩入'); //ボタンの表示確認
         });
     }
 
@@ -318,10 +319,10 @@ class AttendanceControllerTest extends DuskTestCase
                 ->waitFor('.form-btn.bg-white')
                 ->press('休憩入')
                 ->waitFor('.form-btn.bg-white')
-                ->assertSeeIn('.form-btn.bg-white','休憩戻')
+                ->assertSeeIn('.form-btn.bg-white','休憩戻') //ボタンの表示確認
                 ->press('休憩戻')
                 ->waitFor('.status')
-                ->assertSeeIn('.status','出勤中');
+                ->assertSeeIn('.status','出勤中'); //ステータスの確認
         });
     }
 
@@ -349,7 +350,7 @@ class AttendanceControllerTest extends DuskTestCase
                 ->press('休憩戻')
                 ->waitFor('.form-btn.bg-white')
                 ->press('休憩入')
-                ->assertSeeIn('.form-btn.bg-white','休憩戻');
+                ->assertSeeIn('.form-btn.bg-white','休憩戻'); //ボタンの表示確認
         });
     }
 
@@ -359,6 +360,13 @@ class AttendanceControllerTest extends DuskTestCase
             'email' => 'test@example.com',
             'password' => 'password',
             'role' => 1
+        ]);
+
+        $adminUser = User::factory()->create([
+            'name' => 'test admin',
+            'email' => 'admin@example.com',
+            'password' => 'password',
+            'role' => 2
         ]);
 
         Timecard::insert([
@@ -374,27 +382,13 @@ class AttendanceControllerTest extends DuskTestCase
                 ->waitFor('.form-btn.bg-white')
                 ->press('休憩入')
                 ->waitFor('.form-btn.bg-white')
-                ->pause(120000) // 2分間待機
+                ->pause(120000) //2分間待機
                 ->press('休憩戻')
                 ->press('ログアウト');
         });
 
-        $adminUser = User::factory()->create([
-            'name' => 'test admin',
-            'email' => 'admin@example.com',
-            'password' => 'password',
-            'role' => 2
-        ]);
-
         $date = Carbon::now()->format('Y-m-d');
 
-        // $clockInは対象のソースを確認する際に必要なため取得
-        $clockIn = rtrim(
-            Timecard::where('user_id', $user->id)
-                ->where('date', Carbon::now()->format('Y-m-d'))
-                ->value('time')
-            ,':00'
-        );
         $breakIn = Carbon::createFromFormat('Y-m-d H:i:s',$date.' '.Timecard::where('user_id', $user->id)
             ->where('date', $date)
             ->where('type', 2)
@@ -407,22 +401,100 @@ class AttendanceControllerTest extends DuskTestCase
 
         $diffMinutes = $breakIn->diffInMinutes($breakOut);
 
-        // 時:分 に変換
+        //時:分 に変換
         $hours = floor($diffMinutes / 60);
         $minutes = str_pad($diffMinutes % 60, 2, '0', STR_PAD_LEFT);
 
         $totalBreakTime = $hours . ':' . $minutes;
 
-        $code = '<td class="table-detail">'.$user->name.'</td>
-                <td class="table-detail">'.$clockIn.'</td>
-                <td class="table-detail"></td>
-                <td class="table-detail">'.$totalBreakTime.'</td>';
+        $code = 'td class="table-detail">'.$user->name.'</td>
+                    <td class="table-detail">08:00</td>
+                    <td class="table-detail"></td>
+                    <td class="table-detail">'.$totalBreakTime.'</td>';
 
         $this->browse(function (Browser $browser) use($adminUser,$code) {
             $browser->loginAs($adminUser)
                 ->visit('/admin/attendance/list')
-                ->assertSeeIn('.selected-date', Carbon::now()->format('Y/m/d'))
-                ->assertSourceHas($code);
+                ->assertSeeIn('.selected-date', Carbon::now()->format('Y/m/d')) //日付の表示確認
+                ->assertSourceHas($code); // 対象ユーザーの休憩時間の確認
+        });
+    }
+
+    /**
+     * ID:8
+     */
+    public function test_success_leaving_work(){
+        $user = User::factory()->create([
+            'name' => 'テスト 花子',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'role' => 1
+        ]);
+
+        Timecard::create([
+            'user_id' => $user->id,
+            'date' => Carbon::now()->format('Y-m-d'),
+            'time' => '8:00:00',
+            'type' => 1
+        ]);
+
+        $this->browse(function (Browser $browser) use($user)  {
+            $browser->loginAs($user)
+                ->visit('/attendance')
+                ->waitFor('.form-btn')
+                ->assertSeeIn('.form-btn','退勤') //ボタンの表示確認
+                ->press('退勤')
+                ->waitFor('.status')
+                ->assertSeeIn('.status','退勤済'); //ステータスの確認
+        });
+    }
+
+    public function test_confirm_clock_out_time_admin(){
+        $user = User::factory()->create([
+            'name' => 'テスト 花子',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'role' => 1
+        ]);
+
+        $adminUser = User::factory()->create([
+            'name' => 'test admin',
+            'email' => 'admin@example.com',
+            'password' => 'password',
+            'role' => 2
+        ]);
+
+        $this->browse(function (Browser $browser) use($user)  {
+            $browser->loginAs($user)
+                ->visit('/attendance')
+                ->waitFor('.form-btn')
+                ->press('出勤')
+                ->waitFor('.form-btn')
+                ->pause(120000) //2分間待機
+                ->press('退勤')
+                ->press('ログアウト');
+        });
+
+        $date = Carbon::now()->format('Y-m-d');
+
+        $clockIn = Timecard::where('user_id',$user->id)
+            ->where('date',$date)
+            ->where('type',config('constants.TIME_TYPE.CLOCK_IN'))
+            ->value('time');
+        $clockOut = Timecard::where('user_id',$user->id)
+            ->where('date',$date)
+            ->where('type',config('constants.TIME_TYPE.CLOCK_OUT'))
+            ->value('time');
+
+        $code = 'td class="table-detail">'.$user->name.'</td>
+                    <td class="table-detail">'.substr($clockIn,0,5).'</td>
+                    <td class="table-detail">'.substr($clockOut,0,5).'</td>';
+
+        $this->browse(function (Browser $browser) use($adminUser,$code) {
+            $browser->loginAs($adminUser)
+                ->visit('/admin/attendance/list')
+                ->assertSeeIn('.selected-date', Carbon::now()->format('Y/m/d')) //日付の表示確認
+                ->assertSourceHas($code); // 対象ユーザーの退勤時間の確認
         });
     }
 }

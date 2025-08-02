@@ -14,7 +14,7 @@ class LoginControllerTest extends TestCase
      * ID:2
      */
 
-    public function test_user_login_fails_without_email()
+    public function test_user_login_fail_without_email()
     {
         User::factory()->make([
             'email' => 'test@example.com',
@@ -31,7 +31,7 @@ class LoginControllerTest extends TestCase
 
     }
 
-    public function test_user_login_fails_without_password(){
+    public function test_user_login_fail_without_password(){
         User::factory()->make([
             'email' => 'test2@example.com',
             'role' => 1
@@ -46,7 +46,7 @@ class LoginControllerTest extends TestCase
         $this->assertEquals('パスワードを入力してください', $errors['password'][0]);
     }
 
-    public function test_user_login_fails(){
+    public function test_user_login_fail(){
         User::factory()->make([
             'email' => 'test2@example.com',
             'password' => 'password',
@@ -67,7 +67,7 @@ class LoginControllerTest extends TestCase
      * ID:3
      */
 
-    public function test_admin_login_fails_without_email()
+    public function test_admin_login_fail_without_email()
     {
         User::factory()->make([
             'email' => 'admin_test@example.com',
@@ -85,7 +85,7 @@ class LoginControllerTest extends TestCase
 
     }
 
-    public function test_admin_login_fails_without_password(){
+    public function test_admin_login_fail_without_password(){
         User::factory()->make([
             'email' => 'admin_test2@example.com',
             'role' => 2
@@ -100,7 +100,7 @@ class LoginControllerTest extends TestCase
         $this->assertEquals('パスワードを入力してください', $errors['password'][0]);
     }
 
-    public function test_admin_login_fails(){
+    public function test_admin_login_fail(){
         User::factory()->make([
             'email' => 'admin_test3@example.com',
             'password' => 'password',

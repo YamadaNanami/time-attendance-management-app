@@ -16,8 +16,8 @@ class Attendance extends Component
         $japaneseWeekday = $japaneseWeekdays[$weekdayNumber];
 
         $year = Carbon::now()->format('Y');
-        $month = ltrim(Carbon::now()->format('m'),'0');
-        $day = ltrim(Carbon::now()->format('d'),'0');
+        $month = Carbon::now()->format('n');
+        $day = Carbon::now()->format('j');
 
         $this->currentDate = $year.'年'.$month.'月'.$day.'日('.$japaneseWeekday.')';
     }
@@ -32,8 +32,8 @@ class Attendance extends Component
         $japaneseWeekday = $japaneseWeekdays[$weekdayNumber];
 
         $year = Carbon::now()->format('Y');
-        $month = ltrim(Carbon::now()->format('m'),'0');
-        $day = ltrim(Carbon::now()->format('d'),'0');
+        $month = Carbon::now()->format('n');
+        $day = Carbon::now()->format('j');
 
         $this->currentDate = $year.'年'.$month.'月'.$day.'日('.$japaneseWeekday.')';
     }

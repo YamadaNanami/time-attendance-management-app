@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('attendance_correction_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('attendance_correction_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('timecard_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('timecard_id')->nullable()->comment('修正申請時に新規登録する勤怠情報があるためnullを許容')->constrained()->cascadeOnDelete();
             $table->tinyInteger('type')->comment('1:出勤,2:休憩入,3:休憩戻,4:退勤');
             $table->time('corrected_time');
             $table->timestamps();
