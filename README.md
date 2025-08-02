@@ -137,14 +137,14 @@ php artisan dusk:install
 docker compose exec php bash
 vendor/bin/phpunit tests/Feature/テストファイル名
 
-
 //test/Unit 内のテストを実施する場合
 docker compose exec app bash
 
 cp .env.dusk.local .env     //.envを切り替える
 php artisan config:clear
 
-php artisan dusk
+php artisan dusk     //ブラウザテストを全て実行するコマンド
+php artisan dusk --filter=tests/Browser/テストファイル名::テストメソッド名     //特定のテストメソッドを実行するコマンド
 
 cp .env.backup .env     //.envを元に戻す
 php artisan config:clear
