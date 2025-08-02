@@ -53,8 +53,8 @@ class AdminAttendanceListController extends Controller
 
         // 画面表示用に日付のフォーマットを変換する
         $year = $selectedDay->year;
-        $month = ltrim($selectedDay->month,'0');
-        $day = ltrim($selectedDay->day,'0');
+        $month = $selectedDay->month;
+        $day = $selectedDay->day;
 
         $displayDateJa = $year.'年'.$month.'月'.$day.'日';
 

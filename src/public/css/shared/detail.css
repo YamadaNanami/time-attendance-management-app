@@ -114,4 +114,11 @@ input[type=time]:last-of-type{
     font-size: 18px;
     color: #FF0000;
     text-align: right;
+    position: relative;
+}
+
+.approval-link{
+    width: fit-content;
+    position: absolute;
+    right: 40px;
 }

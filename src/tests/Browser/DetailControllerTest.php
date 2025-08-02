@@ -161,7 +161,7 @@ class DetailControllerTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $workDay, $date) {
             $browser->loginAs($user)
                 ->visit('/attendance/' . $workDay->id . '?selectedDate=' . $date->toDateString())
-                ->type('input[name="breakOut[1]"]','18:00') //休憩開始時間に退勤時間より後の時刻を入力する
+                ->type('input[name="breakOut[1]"]','18:00') //休憩終了時間に退勤時間より後の時刻を入力する
                 ->press('修正')
                 ->assertSeeIn('.detail-table tbody .table-row:nth-of-type(4) .table-detail .error-msg','休憩時間が勤務時間外です'); //エラーメッセージの確認(エラーメッセージは機能要件に記載の文言を使用)
         });

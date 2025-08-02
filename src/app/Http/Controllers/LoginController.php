@@ -61,9 +61,9 @@ class LoginController extends Controller
         if(Auth::attempt($request->only('email','password'))){
 
             $user = Auth::user();
-            $isAdminView = $request->isAdminView ? true : false;
+            $isAdminView = $request->isAdminView ?? false;
 
-            if($isAdminView == false){
+            if(!$isAdminView){
                 // 一般ユーザー用のログイン画面からのリクエストの場合
                 // ログインユーザーのロールが適切か確認する
                 if($user->role == 1){
@@ -76,7 +76,7 @@ class LoginController extends Controller
                     Auth::logout();
                     return back()->withErrors(['email' => __('auth.failed')]);
                 }
-            }elseif($isAdminView == true){
+            }elseif($isAdminView){
                 // 管理者用のログイン画面からのリクエストの場合
                 // ログインユーザーのロールが適切か確認する
                 if($user->role != 2){
@@ -87,6 +87,7 @@ class LoginController extends Controller
             }
 
         }
+
         return $this->loginPipeline($request)->then(function ($request) {
             return app(LoginResponse::class);
         });

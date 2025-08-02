@@ -83,6 +83,7 @@ class AttendanceDetailController extends Controller
             'breakTimeLists' => $breakTimes,
             'comment' => $attendanceCorrection['comment'] ?? null,
             'approvalFlag' => $attendanceCorrection['approval_flag'] ?? null,
+            'attendanceCorrectionId' => $attendanceCorrection['id'] ?? null
         ];
 
         return view('shared.detail',compact('data'));

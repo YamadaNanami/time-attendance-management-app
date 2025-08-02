@@ -108,7 +108,17 @@
             </tr>
         </table>
         @if($isReadonly)
-            <p class="text">*承認待ちのため修正はできません。</p>
+        <!-- 「*承認待ちのため修正はできません。」が管理者側に表示されると違和感があったため、管理者向けの文言を追加 -->
+            @if(Auth::user()->role == config('constants.ROLE.USER'))
+                <p class="text">*承認待ちのため修正はできません。</p>
+            @elseif(Auth::user()->role == config('constants.ROLE.ADMIN'))
+                <p class="text">
+                    *修正申請中の勤怠情報です。
+                    <a href="{{ route('admin.approval',['attendance_correct_request' => $data['attendanceCorrectionId']]) }}" class="approval-link">
+                        修正申請承認画面はこちら
+                    </a>
+                </p>
+            @endif
         @else
             <button type="submit" class="submit-btn" name="selectedDate" value="{{ $data['year'].'-'.$data['month'].'-'.$data['day'] }}">修正</button>
         @endif

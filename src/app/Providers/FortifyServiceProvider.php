@@ -56,6 +56,7 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 $role = Auth::user()->role;
+
                 if($role == 1){
                     // 一般ユーザーの場合は出勤登録画面（一般ユーザー）へリダイレクトする
                     return redirect()->route('user.index');

@@ -11,7 +11,7 @@
 </head>
 
 @php
-    $isRoute = request()->routeIs('login') || request()->routeIs('register') || request()->routeIs('verification.notice') || request()->routeIs('admin.login');
+    $isRoute = request()->routeIs('login') || request()->routeIs('register') || request()->routeIs('verification.notice') || request()->routeIs('email.verified') || request()->routeIs('admin.login');
 @endphp
 <body @if($isRoute) @else class="bg-default" @endif>
     <header class="header">
@@ -21,7 +21,7 @@
                     <img src="{{ asset('/img/logo.svg') }}" alt="サイトのロゴ画像" class="logo-img">
                 </a>
             </h1>
-            @if(!Auth::check() || request()->routeIs('verification.notice'))
+            @if(!Auth::check() || request()->routeIs('verification.notice') || request()->routeIs('email.verified'))
                 {{-- 未ログイン時はナビメニューを表示させない --}}
             @elseif(Auth::user()->role == config('constants.ROLE.USER'))
                 {{-- 一般ユーザー用のナビメニュー --}}
@@ -68,7 +68,7 @@
                             <a href="{{ route('application_list') }}" class="nav-link">申請一覧</a>
                         </li>
                         <li class="nav-list">
-                        <form action="/logout" method="post">
+                            <form action="/logout" method="post">
                                 @csrf
                                 <input type="hidden" name="role" value={{Auth::user()->role}}>
                                 <button type="submit" class="nav-link">ログアウト</button>
@@ -83,6 +83,7 @@
     <main class="page-content">
         @yield('content')
     </main>
+    @yield('script')
 </body>
 
 </html>

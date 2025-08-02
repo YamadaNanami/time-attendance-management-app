@@ -7,6 +7,7 @@ use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceDetailController;
 use App\Http\Controllers\AttendanceListController;
+use App\Http\Controllers\CustomVerifyEmailController;
 use App\Http\Controllers\DetailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -31,11 +32,12 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // メール確認のハンドラ
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
+Route::get('/email/verify/{id}/{hash}',CustomVerifyEmailController::class)->middleware(['auth', 'signed'])->name('verification.verify');
 
-    return redirect()->route('user.index');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+// メール認証画面の表示
+Route::get('/email/verified', function () {
+    return view('auth.email-verified');
+})->name('email.verified');
 
 
 // 一般ユーザー用のビュー

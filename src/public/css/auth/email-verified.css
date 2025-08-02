@@ -1,0 +1,19 @@
+.page-content {
+    margin-top: 240px;
+}
+
+.txt-wrap {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.page-title {
+    padding-left: 0;
+    border-left: none;
+}
+
+.txt {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
