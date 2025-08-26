@@ -4,8 +4,7 @@
 
 ### Docker ビルド
 
-1. git clone git@github.com:YamadaNamami/time-attendance-management-app.git
-
+1. git clone git@github.com:YamadaNanami/time-attendance-management-app.git
 2. docker-compose up -d --build
 
 ### Laravel 環境構築
