@@ -44,22 +44,6 @@ services:
         ports:
             - 8080:80
 
-    app:
-        build:
-            context: ./docker/php
-        volumes:
-            - ./src:/var/www
-        working_dir: /var/www
-        depends_on:
-            - selenium
-
-    selenium:
-        image: selenium/standalone-chrome:latest
-        platform : linux/x86_64
-        ports:
-            - "4444:4444"
-        shm_size: 2gb
-
     mailhog:
         image: mailhog/mailhog
         platform: linux/x86_64
