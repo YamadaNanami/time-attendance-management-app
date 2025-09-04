@@ -51,9 +51,6 @@
    mysql -u root -p
    //パスワードはrootと入力
    CREATE DATABASE demo_test;
-
-   docker-compose exec php bash
-   php artisan migrate --env=testing
    ```
 
 2. config/database.php を開き、 mysql の配列部分をコピーして新たに mysql_test を作成し、以下の項目を修正する
@@ -66,11 +63,9 @@
 
 3. PHP コンテナにログインし、.env をコピーして.env.testing ファイルを作成する
 
-```
-
-cp .env .env.testing
-
-```
+   ```
+   cp .env .env.testing
+   ```
 
 4. .env.testing ファイルの以下項目を編集する
 
@@ -84,71 +79,35 @@ cp .env .env.testing
 
 5. テスト用アプリケーションキーを作成する
 
-```
-
-php artisan key:generate --env=testing
-
-```
+   ```
+   php artisan key:generate --env=testing
+   ```
 
 6. キャッシュを削除する
 
-```
+   ```
+   php artisan config:clear
+   ```
 
-php artisan config:clear
+7. テスト用のテーブルを作成する
 
-```
+   ```
+   php artisan migrate --env=testing
+   ```
 
-7. phpunit.xml 内の以下を編集する
+8. phpunit.xml 内の以下を編集する
 
    | env name        | 変更前の value | 変更後の value |
    | --------------- | -------------- | -------------- |
    | "DB_CONNECTION" | "sqlite"       | "mysql_test"   |
    | "DB_DATABASE"   | ":memory:"     | "demo_test"    |
 
-8. PHP コンテナにログインし、.env.testing をコピーして.env.dusk.local ファイルを作成する(Dusk 用の.env ファイルの作成)
-
-```
-
-cp .env.testing .env.dusk.local
-
-```
-
-9. .env.dusk.local ファイルの以下項目を編集・追加する
-
-   | 項目            | 変更前の値               | 変更後の値                  |
-   | --------------- | ------------------------ | --------------------------- |
-   | APP_URL         | http://localhost         | http://nginx                |
-   | DUSK_DRIVER_URL | (追加する項目のためなし) | http://selenium:4444/wd/hub |
-
-10. 以下コマンドを実行する
-
-```
-
-php artisan dusk:install
-
-```
-
 ## テストの実行
 
-```
-
-//test/Feature 内のテスト実施する場合
-docker compose exec php bash
-vendor/bin/phpunit tests/Feature/テストファイル名
-
-//test/Unit 内のテストを実施する場合
-docker compose exec app bash
-
-cp .env.dusk.local .env     //.envを切り替える
-php artisan config:clear
-
-php artisan dusk     //ブラウザテストを全て実行するコマンド
-php artisan dusk --filter=tests/Browser/テストファイル名::テストメソッド名     //特定のテストメソッドを実行するコマンド
-
-cp .env.backup .env     //.envを元に戻す
-php artisan config:clear
-
-```
+   ```
+   docker compose exec php bash
+   vendor/bin/phpunit tests/Feature/テストファイル名
+   ```
 
 ## 使用技術（実行環境）
 
